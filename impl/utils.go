@@ -1,4 +1,5 @@
-package internal
+// Package impl contains Logger implementations and various utils for them.
+package impl
 
 import (
 	"github.com/junk1tm/log"
