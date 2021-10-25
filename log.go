@@ -46,19 +46,7 @@ func String(key string, value string) Field          { return Field{key, value} 
 func Time(key string, value time.Time) Field         { return Field{key, value} }
 func Duration(key string, value time.Duration) Field { return Field{key, value} }
 func Error(err error) Field                          { return Field{"error", err} }
-func Object(l Loggable) Field                        { return Field{"", flatten(l)} }
-
-func flatten(l Loggable) []Field {
-	var fields []Field
-	for _, field := range l.Log() {
-		if fs, ok := field.Value.([]Field); ok {
-			fields = append(fields, fs...)
-		} else {
-			fields = append(fields, field)
-		}
-	}
-	return fields
-}
+func Object(l Loggable) Field                        { return Field{"", l} }
 
 // Nop is a no-op Logger implementation useful in tests.
 var Nop Logger = &nop{}
