@@ -5,20 +5,26 @@ import (
 	"time"
 )
 
-// Logger is a minimal logging interface.
+// Logger is a minimal logging interface with levels.
 // It uses structured logging with Field parameters to ensure type safety.
 type Logger interface {
-	Debug(text string, fields ...Field)
-	Info(text string, fields ...Field)
-	Error(text string, fields ...Field)
+	// Debug writes logs at DEBUG level.
+	// It is used to log information useful for developers.
+	Debug(msg string, fields ...Field)
+	// Info writes logs at INFO level.
+	// It is used to log information useful for users.
+	Info(msg string, fields ...Field)
+	// Error writes logs at ERROR level.
+	// It is used to handle errors by logging them.
+	Error(msg string, fields ...Field)
 }
 
 // Loggable represents an entity that can be logged.
 // It provides a type-safe way to add any user-defined type to log context.
 // Use Object function to pass Loggable as a Field to Logger's methods.
 type Loggable interface {
-	// Log returns a list of fields to log.
-	Log() []Field
+	// ToLog returns a list of fields to log.
+	ToLog() []Field
 }
 
 // Field is a log context general field.
@@ -53,6 +59,6 @@ var Nop Logger = &nop{}
 
 type nop struct{}
 
-func (n *nop) Debug(text string, fields ...Field) {}
-func (n *nop) Info(text string, fields ...Field)  {}
-func (n *nop) Error(text string, fields ...Field) {}
+func (n *nop) Debug(msg string, fields ...Field) {}
+func (n *nop) Info(msg string, fields ...Field)  {}
+func (n *nop) Error(msg string, fields ...Field) {}

@@ -44,7 +44,7 @@ type A struct {
 	a int
 }
 
-func (a A) Log() []log.Field {
+func (a A) ToLog() []log.Field {
 	return []log.Field{
 		log.Int("key_2", a.a),
 	}
@@ -55,7 +55,7 @@ type B struct {
 	b int
 }
 
-func (b B) Log() []log.Field {
+func (b B) ToLog() []log.Field {
 	return []log.Field{
 		log.Object(b.a),
 		log.Int("key_3", b.b),

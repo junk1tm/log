@@ -14,7 +14,7 @@ func FlattenFields(fields []log.Field) []log.Field {
 	var result []log.Field
 	for _, field := range fields {
 		if l, ok := field.Value.(log.Loggable); ok {
-			result = append(result, FlattenFields(l.Log())...)
+			result = append(result, FlattenFields(l.ToLog())...)
 		} else {
 			result = append(result, field)
 		}
