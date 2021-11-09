@@ -25,6 +25,8 @@ func (w *wrapper) Debug(msg string, fields ...log.Field) { w.logger.Debug(msg, z
 func (w *wrapper) Info(msg string, fields ...log.Field)  { w.logger.Info(msg, zapFields(fields)...) }
 func (w *wrapper) Error(msg string, fields ...log.Field) { w.logger.Error(msg, zapFields(fields)...) }
 
+func (w *wrapper) AddCallerSkip(skip int) { w.logger = w.logger.WithOptions(zap.AddCallerSkip(skip)) }
+
 func zapFields(fields []log.Field) []zap.Field {
 	var zf []zap.Field
 
@@ -63,7 +65,7 @@ func zapFields(fields []log.Field) []zap.Field {
 		case time.Duration:
 			zf = append(zf, zap.Duration(field.Key, value))
 		case error:
-			zf = append(zf, zap.Error(value))
+			zf = append(zf, zap.NamedError(field.Key, value))
 		default:
 			panic(fmt.Sprintf("unexpected field type %T", value))
 		}
