@@ -28,7 +28,7 @@ prefer [io.Writer][io-writer].
 * Dependency-free (implementations are optional)
 * Support for most basic types and user-defined types implementing [Loggable][loggable]
 * Support for [child loggers][child]
-* [Implementations][implementations] for the most popular logging libraries
+* Implementations for the most popular logging libraries
 
 ## Installation
 
@@ -72,19 +72,19 @@ type Loggable interface {
 package main
 
 import (
-	"github.com/some/logger" // logging backend of your choice (e.g., zap)
+	"github.com/example/logger" // logging backend of your choice (e.g., zap)
 	"github.com/junk1tm/log"
-	someimpl "github.com/junk1tm/log/impl/some"
+	"github.com/junk1tm/log/exampleimpl"
 )
 
 func main() {
 	l := logger.New()
-	a := app{logger: someimpl.NewLogger(l)}
+	a := app{logger: exampleimpl.NewLogger(l)}
 	a.run()
 }
 
 type app struct {
-	logger log.Logger // do not depend on github.com/some/logger directly
+	logger log.Logger // do not depend on github.com/example/logger directly
 }
 
 func (a *app) run() {
@@ -141,6 +141,5 @@ func UserID(id int) log.Field { return log.Int("user_id", id) }
 [io-writer]: https://pkg.go.dev/io#Writer
 [loggable]: https://pkg.go.dev/github.com/junk1tm/log#Loggable
 [child]: https://pkg.go.dev/github.com/junk1tm/log#WithFields
-[implementations]: https://github.com/junk1tm/log/blob/main/impl
 [cheney-post]: https://dave.cheney.net/2015/11/05/lets-talk-about-logging
 [exit-once]: https://github.com/uber-go/guide/blob/master/style.md#exit-once
