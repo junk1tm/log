@@ -62,3 +62,44 @@ type nop struct{}
 func (n *nop) Debug(msg string, fields ...Field) {}
 func (n *nop) Info(msg string, fields ...Field)  {}
 func (n *nop) Error(msg string, fields ...Field) {}
+
+// callerSkipper is an optional extension for Logger.
+// It allows implementations to increase the number of callers skipped by caller annotation.
+type callerSkipper interface {
+	AddCallerSkip(skip int)
+}
+
+// WithFields creates a child Logger that adds the provided fields on each logging operation.
+func WithFields(logger Logger, fields ...Field) Logger {
+	if skipper, ok := logger.(callerSkipper); ok {
+		skipper.AddCallerSkip(1)
+	}
+
+	return &withFields{
+		logger: logger,
+		fields: fields,
+	}
+}
+
+type withFields struct {
+	logger Logger
+	fields []Field
+}
+
+func (wf *withFields) Debug(msg string, fields ...Field) {
+	wf.logger.Debug(msg, append(wf.fields, fields...)...)
+}
+
+func (wf *withFields) Info(msg string, fields ...Field) {
+	wf.logger.Info(msg, append(wf.fields, fields...)...)
+}
+
+func (wf *withFields) Error(msg string, fields ...Field) {
+	wf.logger.Error(msg, append(wf.fields, fields...)...)
+}
+
+func (wf *withFields) AddCallerSkip(skip int) {
+	if skipper, ok := wf.logger.(callerSkipper); ok {
+		skipper.AddCallerSkip(skip)
+	}
+}

@@ -1,10 +1,10 @@
-package zap_test
+package zapimpl_test
 
 import (
 	"github.com/junk1tm/log"
 	"go.uber.org/zap"
 
-	zapimpl "github.com/junk1tm/log/impl/zap"
+	"github.com/junk1tm/log/zapimpl"
 )
 
 func ExampleNewLogger() {

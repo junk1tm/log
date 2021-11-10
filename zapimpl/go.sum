@@ -3,10 +3,8 @@ github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZx
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/junk1tm/log v0.0.0-20211107225351-ad31aa8fc6a3 h1:8xa9L4COY97CTXoVYDIgtAfgpa8wyz7M7Ptx64B5jiQ=
-github.com/junk1tm/log v0.0.0-20211107225351-ad31aa8fc6a3/go.mod h1:YTQiXLHm1J7kIVxh8ggoBX4IHHcDtjN47pjjfZLZos0=
-github.com/junk1tm/log v0.1.0 h1:Tbypcl0YMknLgiI8x53du19cjXgjibOEhm7RMWZ6Yk4=
-github.com/junk1tm/log v0.1.0/go.mod h1:YTQiXLHm1J7kIVxh8ggoBX4IHHcDtjN47pjjfZLZos0=
+github.com/junk1tm/log v0.2.1-0.20211110002859-99bb828dd3f9 h1:GysrL/v1+RUOyw61dw2kgZOl+e8zqBg8HOHtZe0tZo0=
+github.com/junk1tm/log v0.2.1-0.20211110002859-99bb828dd3f9/go.mod h1:YTQiXLHm1J7kIVxh8ggoBX4IHHcDtjN47pjjfZLZos0=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
