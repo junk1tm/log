@@ -26,9 +26,11 @@ prefer [io.Writer][io-writer].
 
 * Simple API
 * Dependency-free (implementations are optional)
-* Support for most basic types and user-defined types implementing [Loggable][loggable]
+* Support for most basic types
+* Support for user-defined types implementing [Loggable][loggable]
 * Support for [child loggers][child]
-* Implementations for the most popular logging libraries
+* Implementations for the most popular logging libraries:
+  * [zap][zap-impl]
 
 ## Installation
 
@@ -141,5 +143,6 @@ func UserID(id int) log.Field { return log.Int("user_id", id) }
 [io-writer]: https://pkg.go.dev/io#Writer
 [loggable]: https://pkg.go.dev/github.com/junk1tm/log#Loggable
 [child]: https://pkg.go.dev/github.com/junk1tm/log#WithFields
+[zap-impl]: https://pkg.go.dev/github.com/junk1tm/log/zapimpl
 [cheney-post]: https://dave.cheney.net/2015/11/05/lets-talk-about-logging
 [exit-once]: https://github.com/uber-go/guide/blob/master/style.md#exit-once
