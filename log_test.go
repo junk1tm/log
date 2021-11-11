@@ -2,6 +2,7 @@ package log_test
 
 import (
 	"fmt"
+	"io"
 	"reflect"
 	"runtime"
 	"strings"
@@ -19,11 +20,63 @@ func TestWithFields(t *testing.T) {
 	want := []call{
 		{
 			msg:    "first call",
-			fields: []log.Field{log.Int("foo", 1), log.Int("bar", 2), log.String("caller", "log_test.go:16")},
+			fields: []log.Field{log.Int("foo", 1), log.Int("bar", 2), log.String("caller", "log_test.go:17")},
 		},
 		{
 			msg:    "second call",
-			fields: []log.Field{log.Int("foo", 1), log.Int("baz", 3), log.String("caller", "log_test.go:17")},
+			fields: []log.Field{log.Int("foo", 1), log.Int("baz", 3), log.String("caller", "log_test.go:18")},
+		},
+	}
+	if got := testLogger.calls; !reflect.DeepEqual(got, want) {
+		t.Errorf("got %+v; want %+v", got, want)
+	}
+}
+
+func TestWithHooks(t *testing.T) {
+	// adds _ prefix to each key.
+	prefixHook := func(lvl log.Level, msg string, fields []log.Field) error {
+		for i := range fields {
+			fields[i].Key = "_" + fields[i].Key
+		}
+		return nil
+	}
+
+	// multiplies each int value by 2.
+	multiplierHook := func(lvl log.Level, msg string, fields []log.Field) error {
+		for i := range fields {
+			if v, ok := fields[i].Value.(int); ok {
+				fields[i].Value = v * 2
+			}
+		}
+		return nil
+	}
+
+	// fails with io.EOF but only at DEBUG level.
+	eofHook := func(lvl log.Level, msg string, fields []log.Field) error {
+		if lvl == log.DebugLevel {
+			return io.EOF
+		}
+		return nil
+	}
+
+	var testLogger testLogger
+	logger := log.WithHooks(&testLogger, prefixHook, multiplierHook, eofHook)
+
+	logger.Debug("first call", log.Int("foo", 1))
+	logger.Info("second call", log.Int("bar", 2))
+
+	want := []call{
+		{
+			msg:    "could not execute hook",
+			fields: []log.Field{log.Error(io.EOF), log.String("caller", "log.go:138" /* TODO(junk1tm): it should probably be log_test.go:65 (the line that triggers hooks) */)},
+		},
+		{
+			msg:    "first call",
+			fields: []log.Field{log.Int("_foo", 2), log.String("caller", "log_test.go:65")},
+		},
+		{
+			msg:    "second call",
+			fields: []log.Field{log.Int("_bar", 4), log.String("caller", "log_test.go:66")},
 		},
 	}
 	if got := testLogger.calls; !reflect.DeepEqual(got, want) {
