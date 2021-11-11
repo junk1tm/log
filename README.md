@@ -130,6 +130,11 @@ import "github.com/junk1tm/log"
 func UserID(id int) log.Field { return log.Int("user_id", id) }
 ```
 
+### Why add hooks if most loggers already support them?
+
+For the same reason the logging interface is introduced in the first place: to prevent coupling between your code
+(hooks, in this case) and a logging library of your choice.
+
 [ci]: https://github.com/junk1tm/log/actions/workflows/go.yml
 [ci-img]: https://github.com/junk1tm/log/actions/workflows/go.yml/badge.svg
 [docs]: https://pkg.go.dev/github.com/junk1tm/log
