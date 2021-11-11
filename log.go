@@ -103,3 +103,62 @@ func (wf *withFields) AddCallerSkip(skip int) {
 		skipper.AddCallerSkip(skip)
 	}
 }
+
+// Level indicates a logging priority.
+type Level int
+
+const (
+	DebugLevel Level = iota - 1
+	InfoLevel
+	ErrorLevel
+)
+
+// Hook is a callback function to be executed before a logging operation.
+type Hook func(lvl Level, msg string, fields []Field) error
+
+// WithHooks creates a child Logger that executes the provided hooks on each logging operation.
+// If a hook returns an error, it will be logged at ERROR level using the provided logger.
+func WithHooks(logger Logger, hooks ...Hook) Logger {
+	if skipper, ok := logger.(callerSkipper); ok {
+		skipper.AddCallerSkip(1)
+	}
+
+	return &withHooks{
+		logger: logger,
+		hooks:  hooks,
+	}
+}
+
+type withHooks struct {
+	logger Logger
+	hooks  []Hook
+}
+
+func (wh *withHooks) Debug(msg string, fields ...Field) {
+	wh.execHooks(DebugLevel, msg, fields)
+	wh.logger.Debug(msg, fields...)
+}
+
+func (wh *withHooks) Info(msg string, fields ...Field) {
+	wh.execHooks(InfoLevel, msg, fields)
+	wh.logger.Info(msg, fields...)
+}
+
+func (wh *withHooks) Error(msg string, fields ...Field) {
+	wh.execHooks(ErrorLevel, msg, fields)
+	wh.logger.Error(msg, fields...)
+}
+
+func (wh *withHooks) AddCallerSkip(skip int) {
+	if skipper, ok := wh.logger.(callerSkipper); ok {
+		skipper.AddCallerSkip(skip)
+	}
+}
+
+func (wh *withHooks) execHooks(lvl Level, msg string, fields []Field) {
+	for _, hook := range wh.hooks {
+		if err := hook(lvl, msg, fields); err != nil {
+			wh.logger.Error("could not execute hook", Error(err))
+		}
+	}
+}

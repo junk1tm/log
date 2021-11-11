@@ -2,6 +2,7 @@
 
 [![ci-img]][ci]
 [![docs-img]][docs]
+[![report-img]][report]
 
 Simple, structured and opinionated logging interface with levels.
 
@@ -28,7 +29,8 @@ prefer [io.Writer][io-writer].
 * Dependency-free (implementations are optional)
 * Support for most basic types
 * Support for user-defined types implementing [Loggable][loggable]
-* Support for [child loggers][child]
+* Support for [child loggers][with-fields]
+* Support for [hooks][with-hooks]
 * Implementations for the most popular logging libraries:
   * [zap][zap-impl]
 
@@ -128,10 +130,17 @@ import "github.com/junk1tm/log"
 func UserID(id int) log.Field { return log.Int("user_id", id) }
 ```
 
+### Why add hooks if most loggers already support them?
+
+For the same reason the logging interface is introduced in the first place: to prevent coupling between your code
+(hooks, in this case) and a logging library of your choice.
+
 [ci]: https://github.com/junk1tm/log/actions/workflows/go.yml
 [ci-img]: https://github.com/junk1tm/log/actions/workflows/go.yml/badge.svg
 [docs]: https://pkg.go.dev/github.com/junk1tm/log
 [docs-img]: https://pkg.go.dev/badge/github.com/junk1tm/log.svg
+[report]: https://goreportcard.com/report/github.com/junk1tm/log
+[report-img]: https://goreportcard.com/badge/github.com/junk1tm/log
 [dip]: https://en.wikipedia.org/wiki/Dependency_inversion_principle
 [std-log]: https://pkg.go.dev/log
 [std-logger]: https://pkg.go.dev/log#Logger
@@ -142,7 +151,8 @@ func UserID(id int) log.Field { return log.Int("user_id", id) }
 [zerolog]: https://github.com/rs/zerolog
 [io-writer]: https://pkg.go.dev/io#Writer
 [loggable]: https://pkg.go.dev/github.com/junk1tm/log#Loggable
-[child]: https://pkg.go.dev/github.com/junk1tm/log#WithFields
+[with-fields]: https://pkg.go.dev/github.com/junk1tm/log#WithFields
+[with-hooks]: https://pkg.go.dev/github.com/junk1tm/log#WithHooks
 [zap-impl]: https://pkg.go.dev/github.com/junk1tm/log/zapimpl
 [cheney-post]: https://dave.cheney.net/2015/11/05/lets-talk-about-logging
 [exit-once]: https://github.com/uber-go/guide/blob/master/style.md#exit-once
