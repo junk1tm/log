@@ -33,6 +33,7 @@ prefer [io.Writer][io-writer].
 * Support for [hooks][with-hooks]
 * Implementations for the most popular logging libraries:
   * [zap][zap-impl]
+  * [logrus][logrus-impl]
 
 ## Installation
 
@@ -154,5 +155,6 @@ For the same reason the logging interface is introduced in the first place: to p
 [with-fields]: https://pkg.go.dev/github.com/junk1tm/log#WithFields
 [with-hooks]: https://pkg.go.dev/github.com/junk1tm/log#WithHooks
 [zap-impl]: https://pkg.go.dev/github.com/junk1tm/log/zapimpl
+[logrus-impl]: https://pkg.go.dev/github.com/junk1tm/log/logrusimpl
 [cheney-post]: https://dave.cheney.net/2015/11/05/lets-talk-about-logging
 [exit-once]: https://github.com/uber-go/guide/blob/master/style.md#exit-once
