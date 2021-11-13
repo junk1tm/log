@@ -3,6 +3,7 @@
 [![ci-img]][ci]
 [![docs-img]][docs]
 [![report-img]][report]
+[![codecov-img]][codecov]
 
 Simple, structured and opinionated logging interface with levels.
 
@@ -143,6 +144,8 @@ For the same reason the logging interface is introduced in the first place: to p
 [docs-img]: https://pkg.go.dev/badge/github.com/junk1tm/log.svg
 [report]: https://goreportcard.com/report/github.com/junk1tm/log
 [report-img]: https://goreportcard.com/badge/github.com/junk1tm/log
+[codecov]: https://codecov.io/gh/junk1tm/log
+[codecov-img]: https://codecov.io/gh/junk1tm/log/branch/main/graph/badge.svg
 [dip]: https://en.wikipedia.org/wiki/Dependency_inversion_principle
 [std-log]: https://pkg.go.dev/log
 [std-logger]: https://pkg.go.dev/log#Logger
