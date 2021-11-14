@@ -48,7 +48,7 @@ func Uint64(key string, value uint64) Field          { return Field{key, value} 
 func Float32(key string, value float32) Field        { return Field{key, value} }
 func Float64(key string, value float64) Field        { return Field{key, value} }
 func Bool(key string, value bool) Field              { return Field{key, value} }
-func String(key string, value string) Field          { return Field{key, value} }
+func String(key, value string) Field                 { return Field{key, value} }
 func Time(key string, value time.Time) Field         { return Field{key, value} }
 func Duration(key string, value time.Duration) Field { return Field{key, value} }
 func Error(err error) Field                          { return Field{"error", err} }
