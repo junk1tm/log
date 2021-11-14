@@ -36,6 +36,7 @@ prefer [io.Writer][io-writer].
   * [zap][zap-impl]
   * [logrus][logrus-impl]
   * [zerolog][zerolog-impl]
+  * [stdlib logger][stdlog-impl]
 
 ## Install
 
@@ -61,7 +62,7 @@ type Logger interface {
 }
 ```
 
-where Field is either a builtin type or an implementation of the following interface:
+where `Field` is either a builtin type or an implementation of the following interface:
 
 ```go
 // Loggable represents an entity that can be logged.
@@ -161,5 +162,6 @@ For the same reason the logging interface is introduced in the first place: to p
 [zap-impl]: https://pkg.go.dev/github.com/junk1tm/log/zapimpl
 [logrus-impl]: https://pkg.go.dev/github.com/junk1tm/log/logrusimpl
 [zerolog-impl]: https://pkg.go.dev/github.com/junk1tm/log/zerologimpl
+[stdlog-impl]: https://pkg.go.dev/github.com/junk1tm/log/stdlogimpl
 [cheney-post]: https://dave.cheney.net/2015/11/05/lets-talk-about-logging
 [exit-once]: https://github.com/uber-go/guide/blob/master/style.md#exit-once
