@@ -26,3 +26,11 @@ func ExampleNewLogger() {
 	// {"bar":2,"level":"info","msg":"example 2"}
 	// {"baz":3,"level":"error","msg":"example 3"}
 }
+
+func ExampleUnwrap() {
+	ll := logrus.New()
+	logger := logrusimpl.NewLogger(ll)
+	if _, ok := logrusimpl.Unwrap(logger); ok {
+		// use logrus logger here:
+	}
+}

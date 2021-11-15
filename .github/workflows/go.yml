@@ -25,6 +25,7 @@ jobs:
       - run: cd zerologimpl && go test -race ./...
       - run: cd stdlogimpl && go test -race ./...
       - uses: codecov/codecov-action@v2
+        continue-on-error: true
         with:
           files: ./coverage.out
 

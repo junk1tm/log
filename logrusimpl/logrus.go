@@ -38,3 +38,19 @@ func logrusFields(fields []log.Field) map[string]interface{} {
 
 	return lf
 }
+
+// Unwrap unwraps the provided logger,
+// allowing access to the underlying logrus.Logger.
+// It returns true on success, false otherwise.
+func Unwrap(logger log.Logger) (*logrus.Logger, bool) {
+	for {
+		switch l := logger.(type) {
+		case *wrapper:
+			return l.logger, true
+		case interface{ Unwrap() log.Logger }:
+			logger = l.Unwrap()
+		default:
+			return nil, false
+		}
+	}
+}

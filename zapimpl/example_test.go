@@ -21,3 +21,11 @@ func ExampleNewLogger() {
 	// {"level":"info","msg":"example 2","bar":2}
 	// {"level":"error","msg":"example 3","baz":3}
 }
+
+func ExampleUnwrap() {
+	zl := zap.NewExample()
+	logger := zapimpl.NewLogger(zl)
+	if _, ok := zapimpl.Unwrap(logger); ok {
+		// use zap logger here:
+	}
+}

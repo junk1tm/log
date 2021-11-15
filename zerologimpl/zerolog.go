@@ -72,3 +72,19 @@ func (w *wrapper) log(event *zerolog.Event, msg string, fields []log.Field) {
 
 	event.CallerSkipFrame(w.callerSkip + 1).Msg(msg)
 }
+
+// Unwrap unwraps the provided logger,
+// allowing access to the underlying zerolog.Logger.
+// It returns true on success, false otherwise.
+func Unwrap(logger log.Logger) (zerolog.Logger, bool) {
+	for {
+		switch l := logger.(type) {
+		case *wrapper:
+			return l.logger, true
+		case interface{ Unwrap() log.Logger }:
+			logger = l.Unwrap()
+		default:
+			return zerolog.Logger{}, false
+		}
+	}
+}
