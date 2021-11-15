@@ -118,8 +118,15 @@ const (
 // Hook is a callback function to be executed before a logging operation.
 type Hook func(lvl Level, msg string, fields []Field) error
 
+// OnHookError is called when Hook returns an error.
+// By default, it logs the error at ERROR level using the logger provided to WithHooks.
+// This behaviour can be customized by setting OnHookError to some user-defined function.
+var OnHookError = func(logger Logger, err error) {
+	logger.Error("could not execute hook", Error(err))
+}
+
 // WithHooks creates a child Logger that executes the provided hooks on each logging operation.
-// If a hook returns an error, it will be logged at ERROR level using the provided logger.
+// If a hook returns an error, it will be handled by OnHookError.
 func WithHooks(logger Logger, hooks ...Hook) Logger {
 	if skipper, ok := logger.(callerSkipper); ok {
 		skipper.AddCallerSkip(1)
@@ -162,7 +169,7 @@ func (wh *withHooks) Unwrap() Logger { return wh.logger }
 func (wh *withHooks) execHooks(lvl Level, msg string, fields []Field) {
 	for _, hook := range wh.hooks {
 		if err := hook(lvl, msg, fields); err != nil {
-			wh.logger.Error("could not execute hook", Error(err))
+			OnHookError(wh.logger, err)
 		}
 	}
 }

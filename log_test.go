@@ -1,6 +1,7 @@
 package log_test
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"reflect"
@@ -20,11 +21,11 @@ func TestWithFields(t *testing.T) {
 	want := []call{
 		{
 			msg:    "first call",
-			fields: []log.Field{log.Int("foo", 1), log.Int("bar", 2), log.String("caller", "log_test.go:17")},
+			fields: []log.Field{log.Int("foo", 1), log.Int("bar", 2), log.String("caller", "log_test.go:18")},
 		},
 		{
 			msg:    "second call",
-			fields: []log.Field{log.Int("foo", 1), log.Int("baz", 3), log.String("caller", "log_test.go:18")},
+			fields: []log.Field{log.Int("foo", 1), log.Int("baz", 3), log.String("caller", "log_test.go:19")},
 		},
 	}
 	if got := testLogger.calls; !reflect.DeepEqual(got, want) {
@@ -59,6 +60,12 @@ func TestWithHooks(t *testing.T) {
 		return nil
 	}
 
+	log.OnHookError = func(logger log.Logger, err error) {
+		if !errors.Is(err, io.EOF) {
+			t.Errorf("got %v; want %v", err, io.EOF)
+		}
+	}
+
 	var testLogger testLogger
 	logger := log.WithHooks(&testLogger, prefixHook, multiplierHook, eofHook)
 
@@ -67,16 +74,12 @@ func TestWithHooks(t *testing.T) {
 
 	want := []call{
 		{
-			msg:    "could not execute hook",
-			fields: []log.Field{log.Error(io.EOF), log.String("caller", "log.go:138" /* TODO(junk1tm): it should probably be log_test.go:65 (the line that triggers hooks) */)},
-		},
-		{
 			msg:    "first call",
-			fields: []log.Field{log.Int("_foo", 2), log.String("caller", "log_test.go:65")},
+			fields: []log.Field{log.Int("_foo", 2), log.String("caller", "log_test.go:72")},
 		},
 		{
 			msg:    "second call",
-			fields: []log.Field{log.Int("_bar", 4), log.String("caller", "log_test.go:66")},
+			fields: []log.Field{log.Int("_bar", 4), log.String("caller", "log_test.go:73")},
 		},
 	}
 	if got := testLogger.calls; !reflect.DeepEqual(got, want) {
