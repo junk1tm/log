@@ -104,6 +104,8 @@ func (wf *withFields) AddCallerSkip(skip int) {
 	}
 }
 
+func (wf *withFields) Unwrap() Logger { return wf.logger }
+
 // Level indicates a logging priority.
 type Level int
 
@@ -154,6 +156,8 @@ func (wh *withHooks) AddCallerSkip(skip int) {
 		skipper.AddCallerSkip(skip)
 	}
 }
+
+func (wh *withHooks) Unwrap() Logger { return wh.logger }
 
 func (wh *withHooks) execHooks(lvl Level, msg string, fields []Field) {
 	for _, hook := range wh.hooks {
