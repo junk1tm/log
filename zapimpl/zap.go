@@ -72,3 +72,19 @@ func zapFields(fields []log.Field) []zap.Field {
 
 	return zf
 }
+
+// Unwrap unwraps the provided logger,
+// allowing access to the underlying zap.Logger.
+// It returns true on success, false otherwise.
+func Unwrap(logger log.Logger) (*zap.Logger, bool) {
+	for {
+		switch l := logger.(type) {
+		case *wrapper:
+			return l.logger, true
+		case interface{ Unwrap() log.Logger }:
+			logger = l.Unwrap()
+		default:
+			return nil, false
+		}
+	}
+}

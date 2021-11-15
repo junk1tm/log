@@ -23,3 +23,11 @@ func ExampleNewLogger() {
 	// [INFO] example 2 bar=2
 	// [ERROR] example 3 baz=3
 }
+
+func ExampleUnwrap() {
+	sl := stdlog.New(os.Stdout, "", 0)
+	logger := stdlogimpl.NewLogger(sl)
+	if _, ok := stdlogimpl.Unwrap(logger); ok {
+		// use stdlog logger here:
+	}
+}

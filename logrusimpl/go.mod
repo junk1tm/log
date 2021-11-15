@@ -3,7 +3,7 @@ module github.com/junk1tm/log/logrusimpl
 go 1.17
 
 require (
-	github.com/junk1tm/log v0.4.0
+	github.com/junk1tm/log v0.5.0
 	github.com/sirupsen/logrus v1.8.1
 )
 

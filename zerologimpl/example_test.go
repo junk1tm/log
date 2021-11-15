@@ -23,3 +23,11 @@ func ExampleNewLogger() {
 	// {"level":"info","bar":2,"message":"example 2"}
 	// {"level":"error","baz":3,"message":"example 3"}
 }
+
+func ExampleUnwrap() {
+	zl := zerolog.New(os.Stdout)
+	logger := zerologimpl.NewLogger(zl)
+	if _, ok := zerologimpl.Unwrap(logger); ok {
+		// use zerolog logger here:
+	}
+}

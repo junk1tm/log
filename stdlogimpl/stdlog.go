@@ -43,3 +43,19 @@ func (w *wrapper) log(lvl string, msg string, fields []log.Field) {
 
 	_ = w.logger.Output(w.callerSkip+1, sb.String())
 }
+
+// Unwrap unwraps the provided logger,
+// allowing access to the underlying stdlog.Logger.
+// It returns true on success, false otherwise.
+func Unwrap(logger log.Logger) (*stdlog.Logger, bool) {
+	for {
+		switch l := logger.(type) {
+		case *wrapper:
+			return l.logger, true
+		case interface{ Unwrap() log.Logger }:
+			logger = l.Unwrap()
+		default:
+			return nil, false
+		}
+	}
+}
