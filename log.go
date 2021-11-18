@@ -87,15 +87,15 @@ type withFields struct {
 }
 
 func (wf *withFields) Debug(msg string, fields ...Field) {
-	wf.logger.Debug(msg, append(wf.fields, fields...)...)
+	wf.logger.Debug(msg, append(wf.copyFields(), fields...)...)
 }
 
 func (wf *withFields) Info(msg string, fields ...Field) {
-	wf.logger.Info(msg, append(wf.fields, fields...)...)
+	wf.logger.Info(msg, append(wf.copyFields(), fields...)...)
 }
 
 func (wf *withFields) Error(msg string, fields ...Field) {
-	wf.logger.Error(msg, append(wf.fields, fields...)...)
+	wf.logger.Error(msg, append(wf.copyFields(), fields...)...)
 }
 
 func (wf *withFields) AddCallerSkip(skip int) {
@@ -105,6 +105,12 @@ func (wf *withFields) AddCallerSkip(skip int) {
 }
 
 func (wf *withFields) Unwrap() Logger { return wf.logger }
+
+func (wf *withFields) copyFields() []Field {
+	fields := make([]Field, len(wf.fields))
+	copy(fields, wf.fields)
+	return fields
+}
 
 // Level indicates a logging priority.
 type Level int
