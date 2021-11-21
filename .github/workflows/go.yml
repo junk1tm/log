@@ -10,21 +10,38 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
         with:
           go-version: 1.17
-      - uses: actions/cache@v2
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache modules
+        uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-go-
-      - run: go test -race -coverprofile=coverage.out ./...
-      - run: cd zapimpl && go test -race ./...
-      - run: cd logrusimpl && go test -race ./...
-      - run: cd zerologimpl && go test -race ./...
-      - run: cd stdlogimpl && go test -race ./...
-      - uses: codecov/codecov-action@v2
+
+      - name: Run tests
+        run: go test -race -coverprofile=coverage.out ./...
+
+      - name: Run zap tests
+        run: cd zapimpl && go test -race ./...
+
+      - name: Run logrus tests
+        run: cd logrusimpl && go test -race ./...
+
+      - name: Run zerolog tests
+        run: cd zerologimpl && go test -race ./...
+
+      - name: Run stdlog tests
+        run: cd stdlogimpl && go test -race ./...
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
         continue-on-error: true
         with:
           files: ./coverage.out
@@ -32,7 +49,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: golangci/golangci-lint-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run linters
+        uses: golangci/golangci-lint-action@v2
         with:
           version: v1.43.0
