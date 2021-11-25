@@ -28,31 +28,38 @@ type Loggable interface {
 }
 
 // Field is a log context general field.
-// Only Logger implementations should interact with Key and Value directly,
-// Logger clients should use available Field constructors to fill log context.
+// It must not be created manually, doing so will cause panic on Logger's methods calls.
+// Instead, available Field producing functions should be used, which ensure type safety.
+//
+//  // bad: Value is interface{}, no compile time checks.
+//  log.Field{Key: "foo", Value: "bar"}
+//  // good: the compiler ensures type safety, impossible to accidentally pass an invalid type.
+//  log.String("foo", "bar")
+//
 type Field struct {
 	Key   string
 	Value interface{}
+	valid bool // a non-exported flag that indicates if this Field has been created properly.
 }
 
-func Int(key string, value int) Field                { return Field{key, value} }
-func Int8(key string, value int8) Field              { return Field{key, value} }
-func Int16(key string, value int16) Field            { return Field{key, value} }
-func Int32(key string, value int32) Field            { return Field{key, value} }
-func Int64(key string, value int64) Field            { return Field{key, value} }
-func Uint(key string, value uint) Field              { return Field{key, value} }
-func Uint8(key string, value uint8) Field            { return Field{key, value} }
-func Uint16(key string, value uint16) Field          { return Field{key, value} }
-func Uint32(key string, value uint32) Field          { return Field{key, value} }
-func Uint64(key string, value uint64) Field          { return Field{key, value} }
-func Float32(key string, value float32) Field        { return Field{key, value} }
-func Float64(key string, value float64) Field        { return Field{key, value} }
-func Bool(key string, value bool) Field              { return Field{key, value} }
-func String(key, value string) Field                 { return Field{key, value} }
-func Time(key string, value time.Time) Field         { return Field{key, value} }
-func Duration(key string, value time.Duration) Field { return Field{key, value} }
-func Error(err error) Field                          { return Field{"error", err} }
-func Object(l Loggable) Field                        { return Field{"", l} }
+func Int(key string, value int) Field                { return Field{key, value, true} }
+func Int8(key string, value int8) Field              { return Field{key, value, true} }
+func Int16(key string, value int16) Field            { return Field{key, value, true} }
+func Int32(key string, value int32) Field            { return Field{key, value, true} }
+func Int64(key string, value int64) Field            { return Field{key, value, true} }
+func Uint(key string, value uint) Field              { return Field{key, value, true} }
+func Uint8(key string, value uint8) Field            { return Field{key, value, true} }
+func Uint16(key string, value uint16) Field          { return Field{key, value, true} }
+func Uint32(key string, value uint32) Field          { return Field{key, value, true} }
+func Uint64(key string, value uint64) Field          { return Field{key, value, true} }
+func Float32(key string, value float32) Field        { return Field{key, value, true} }
+func Float64(key string, value float64) Field        { return Field{key, value, true} }
+func Bool(key string, value bool) Field              { return Field{key, value, true} }
+func String(key, value string) Field                 { return Field{key, value, true} }
+func Time(key string, value time.Time) Field         { return Field{key, value, true} }
+func Duration(key string, value time.Duration) Field { return Field{key, value, true} }
+func Error(err error) Field                          { return Field{"error", err, true} }
+func Object(l Loggable) Field                        { return Field{"", l, true} }
 
 // Nop is a no-op Logger implementation useful in tests.
 var Nop Logger = &nop{}

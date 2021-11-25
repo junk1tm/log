@@ -37,6 +37,16 @@ func TestFlattenFields(t *testing.T) {
 			}
 		})
 	}
+
+	// special case with panic, test separately:
+	t.Run("panic on a manually created Field", func(t *testing.T) {
+		defer func() { recover() }()
+
+		field := log.Field{Key: "foo", Value: "bar"}
+		log.FlattenFields([]log.Field{field})
+
+		t.Error("want FlattenFields to panic")
+	})
 }
 
 type A struct {
