@@ -27,11 +27,12 @@ prefer [io.Writer][io-writer].
 ## Features
 
 * Simple API
-* Dependency-free (implementations are optional)
+* Type-safe fields
 * Support for most basic types
 * Support for user-defined types implementing [Loggable][loggable]
 * Support for [child loggers][with-fields]
 * Support for [hooks][with-hooks]
+* Dependency-free (implementations are optional)
 * Implementations for the most popular logging libraries:
   * [zap][zap-impl]
   * [logrus][logrus-impl]
